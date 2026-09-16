@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# ytdigest — transcribe a YouTube video and surface the interesting parts.
+#
+#   ytdigest "https://youtu.be/VIDEO_ID"
+#   ytdigest URL --markdown report.md
+#
+# The virtualenv, transcript cache and interest profile live in $YTDIGEST_HOME
+# (default ~/.local/share/ytdigest), not next to the code, so plugin updates keep them.
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+export YTDIGEST_HOME="${YTDIGEST_HOME:-${XDG_DATA_HOME:-$HOME/.local/share}/ytdigest}"
+VENV="$YTDIGEST_HOME/.venv"
+
+if [[ ! -x "$VENV/bin/python" ]] || ! cmp -s "$ROOT/requirements.txt" "$VENV/requirements.txt"; then
+    echo "Setting up virtualenv in $VENV ..." >&2
+    mkdir -p "$YTDIGEST_HOME"
+    python3 -m venv "$VENV"
+    "$VENV/bin/pip" install -q --upgrade pip
+    "$VENV/bin/pip" install -q -r "$ROOT/requirements.txt"
+    cp "$ROOT/requirements.txt" "$VENV/requirements.txt"
+    echo "Setup complete." >&2
+fi
+
+export PYTHONPATH="$ROOT${PYTHONPATH:+:$PYTHONPATH}"
+exec "$VENV/bin/python" -m ytdigest.cli "$@"

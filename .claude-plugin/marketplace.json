@@ -1,0 +1,13 @@
+{
+  "name": "barnabys-drew",
+  "owner": { "name": "Drew Pilarski", "url": "https://github.com/barnabys-drew" },
+  "metadata": {
+    "description": "Claude Code skills for repo hygiene, terminal workflows, and getting the useful parts out of long videos."
+  },
+  "plugins": [
+    { "name": "repo-triage", "source": "./plugins/repo-triage", "description": "Audit your GitHub repos and archive, delete, or plan next steps for each." },
+    { "name": "mdp", "source": "./plugins/mdp", "description": "Live markdown preview in a Herdr pane." },
+    { "name": "lex-transcript-search", "source": "./plugins/lex-transcript-search", "description": "Timestamped search of Lex Fridman Podcast transcripts." },
+    { "name": "youtube-digest", "source": "./plugins/youtube-digest", "description": "YouTube transcript plus the highlights worth watching." }
+  ]
+}

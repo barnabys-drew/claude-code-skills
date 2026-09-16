@@ -1,0 +1,40 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: lex-transcript-search tests
+        working-directory: plugins/lex-transcript-search/skills/lex-transcript-search
+        run: python -m unittest test_search.py
+      - name: youtube-digest tests
+        working-directory: plugins/youtube-digest
+        run: |
+          pip install -q -r requirements.txt
+          PYTHONPATH=. python -m pytest -q tests
+      - name: shell syntax
+        run: bash -n plugins/mdp/bin/mdp plugins/youtube-digest/bin/ytdigest
+
+  secrets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

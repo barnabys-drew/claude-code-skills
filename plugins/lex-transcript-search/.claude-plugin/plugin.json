@@ -1,0 +1,9 @@
+{
+  "name": "lex-transcript-search",
+  "version": "1.0.0",
+  "description": "Find where a word or topic comes up in a Lex Fridman Podcast episode, with timestamped YouTube links and verbatim quotes.",
+  "author": { "name": "Drew Pilarski", "url": "https://github.com/barnabys-drew" },
+  "repository": "https://github.com/barnabys-drew/claude-code-skills",
+  "license": "MIT",
+  "keywords": ["podcast", "transcript", "search"]
+}

@@ -1,0 +1,9 @@
+{
+  "name": "mdp",
+  "version": "1.0.0",
+  "description": "Preview a markdown file with Glow in a live-reloading Herdr pane beside your session.",
+  "author": { "name": "Drew Pilarski", "url": "https://github.com/barnabys-drew" },
+  "repository": "https://github.com/barnabys-drew/claude-code-skills",
+  "license": "MIT",
+  "keywords": ["markdown", "herdr", "glow"]
+}

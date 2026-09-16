@@ -1,0 +1,9 @@
+{
+  "name": "repo-triage",
+  "version": "1.0.0",
+  "description": "Audit your GitHub repos: find stale ones, archive or delete with per-repo confirmation, and pick next steps for the keepers.",
+  "author": { "name": "Drew Pilarski", "url": "https://github.com/barnabys-drew" },
+  "repository": "https://github.com/barnabys-drew/claude-code-skills",
+  "license": "MIT",
+  "keywords": ["github", "gh", "cleanup"]
+}

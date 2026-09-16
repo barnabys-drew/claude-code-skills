@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+# mdp — preview markdown with Glow in a Herdr pane split to the right.
+#   mdp FILE.md   render one file in a scrollable pager
+#   mdp [DIR]     browse the markdown files under DIR (default: current dir)
+# Press q in the preview to close it; the pane closes with it.
+# Outside Herdr, runs Glow in the current terminal instead.
+set -euo pipefail
+
+target="${1:-.}"
+[ -e "$target" ] || { echo "mdp: no such file or directory: $target" >&2; exit 1; }
+target="$(realpath "$target")"
+
+if [ -f "$target" ]; then
+  cmd=(glow -t "$target")
+else
+  cmd=(glow "$target")
+fi
+
+if [ "${HERDR_ENV:-}" != 1 ]; then
+  exec "${cmd[@]}"
+fi
+
+# ratio is the calling pane's share: the preview gets the wider 60%.
+pane_id="$(herdr pane split --current --direction right --ratio 0.4 --cwd "$PWD" --focus \
+  | python3 -c 'import json,sys; print(json.load(sys.stdin)["result"]["pane"]["pane_id"])')"
+
+herdr pane run "$pane_id" "$(printf '%q ' "${cmd[@]}"); exit" >/dev/null
+
+# Glow 3.0's viewer opens on a blank document until it reloads; press r once it is up.
+if [ -f "$target" ]; then
+  herdr pane wait-output "$pane_id" --match "? Help" --source visible --timeout 5000 >/dev/null 2>&1 \
+    && sleep 0.3 && herdr pane send-keys "$pane_id" r >/dev/null
+fi
