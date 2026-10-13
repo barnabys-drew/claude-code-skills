@@ -19,6 +19,7 @@ import html
 import json
 import re
 import sys
+import urllib.parse
 import urllib.request
 from collections import Counter
 from pathlib import Path
@@ -36,8 +37,10 @@ def fetch(url, refresh=False):
     path = CACHE_DIR / f"{key}.html"
     if path.exists() and not refresh:
         return path.read_text(encoding="utf-8", errors="replace")
+    if urllib.parse.urlsplit(url).scheme not in ("http", "https"):
+        raise ValueError(f"only http(s) URLs are allowed: {url!r}")
     req = urllib.request.Request(url, headers={"User-Agent": UA})
-    with urllib.request.urlopen(req, timeout=60) as resp:
+    with urllib.request.urlopen(req, timeout=60) as resp:  # nosemgrep: python.lang.security.audit.dynamic-urllib-use-detected.dynamic-urllib-use-detected -- scheme checked above
         body = resp.read().decode("utf-8", errors="replace")
     path.write_text(body, encoding="utf-8")
     return body

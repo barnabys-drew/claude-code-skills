@@ -23,10 +23,15 @@ import json
 from datetime import datetime, timezone
 from email.utils import format_datetime
 from pathlib import Path
-from xml.sax.saxutils import escape
+from html import escape as _html_escape
 
 MANIFEST_NAME = "episodes.json"
 FEED_NAME = "feed.xml"
+
+
+def escape(value: str) -> str:
+    """Escape &, < and > for XML text and attribute values (output only)."""
+    return _html_escape(value, quote=False)
 
 DEFAULT_TITLE = "ytdigest"
 DEFAULT_DESCRIPTION = "Auto-generated audio summaries of YouTube videos."
