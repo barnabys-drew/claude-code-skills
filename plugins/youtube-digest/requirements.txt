@@ -1,5 +1,5 @@
 yt-dlp>=2026.7.4
-requests>=2.31.0
+requests>=2.34.2
 faster-whisper>=1.2.1
 mutagen>=1.47.0
 pytest>=8.0.0
